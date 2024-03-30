@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Signup</title>
+</head>
+<body>
+	<h1>Signup</h1>
+	<form action="/signup" method="post" th:object="${portalUser}">
+		Name:
+		<input type="text" name="name" th:field="*{name}">
+		<span th:errors="*{name}"></span>
+		<br>
+		Email:
+		<input type="email" name="email" th:field="*{email}">
+		<span th:errors="*{email}"></span>
+		<br> 
+		Mobile:
+		<input type="text" name="mobile" th:field="*{mobile}">
+		<span th:errors="*{mobile}"></span>
+		<br>
+		Date of Birth:
+		<input type="date" required="required" name="dob" th:field="*{dob}">
+		<span th:errors="*{dob}"></span>
+		<br>
+		Password:
+		<input type="password" name="password">
+		<span th:errors="*{password}"></span>
+		<br> 
+		Confirm Password:
+		<input type="password" name="confirm_password">
+		<span th:errors="*{confirm_password}"></span>
+		<br>
+		Role:
+		<input type="radio" name="role" th:field="*{role}" value="applicant">Applicant 
+		<input type="radio" name="role" th:field="*{role}" value="recruiter">Recruiter
+		 <span th:errors="*{role}"></span>
+		 <br>
+		<button>Signup</button>
+	</form>
+</body>
+</html>
