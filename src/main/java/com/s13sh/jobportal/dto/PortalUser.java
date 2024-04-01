@@ -39,5 +39,7 @@ public class PortalUser {
 	private String confirm_password;
 	@NotNull(message = "* this is required field")
 	private String role;
+	private int otp;
+	private boolean verified;
 
 }

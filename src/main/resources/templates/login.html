@@ -5,6 +5,7 @@
 </head>
 <body>
 	<h1>Login</h1>
+	<h1 th:text="${msg}"></h1>
 	<form action="/login" method="post">
 		Email / Mobile: <input type="text" name="email-phone">
 		Password: <input type="password" name="password">
