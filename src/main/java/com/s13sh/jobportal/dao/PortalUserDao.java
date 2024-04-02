@@ -1,14 +1,12 @@
 package com.s13sh.jobportal.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import com.s13sh.jobportal.dto.PortalUser;
 import com.s13sh.jobportal.repository.PortalUserRepository;
 
-import jakarta.validation.Valid;
-
-@Component
+@Repository
 public class PortalUserDao {
 
 	@Autowired
