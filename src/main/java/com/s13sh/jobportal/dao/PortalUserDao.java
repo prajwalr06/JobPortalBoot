@@ -13,7 +13,7 @@ public class PortalUserDao {
 	PortalUserRepository userRepository;
 
 	public boolean existsByEmail(String email) {
-		return userRepository.existsByEmail(email);
+		return userRepository.existsByEmailAndVerifiedTrue(email);
 	}
 
 	public void saveUser(PortalUser portalUser) {
@@ -22,5 +22,19 @@ public class PortalUserDao {
 
 	public PortalUser findUserById(int id) {
 		return userRepository.findById(id).orElse(null);
+	}
+
+	public void deleteIfExists(String email) {
+		PortalUser user = userRepository.findByEmail(email);
+		if (user != null)
+			userRepository.delete(user);
+	}
+
+	public PortalUser findUserByMobile(long mobile) {
+		return userRepository.findByMobile(mobile);
+	}
+
+	public PortalUser findUserByEmail(String email) {
+		return userRepository.findByEmail(email);
 	}
 }

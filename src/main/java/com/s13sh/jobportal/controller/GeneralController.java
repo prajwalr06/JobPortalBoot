@@ -5,12 +5,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.s13sh.jobportal.dto.PortalUser;
 import com.s13sh.jobportal.service.PortalUserService;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 @Controller
@@ -51,6 +53,17 @@ public class GeneralController {
 	public String submitOtp(@RequestParam int otp, @RequestParam int id, ModelMap map) {
 		System.out.println("Control - /submit-otp Get , Recieved otp");
 		return userService.submitOtp(otp, id, map);
+	}
+
+	@GetMapping("/resend-otp/{id}")
+	public String resendOtp(@PathVariable int id, ModelMap map) {
+		return userService.resendOtp(id, map);
+	}
+
+	@PostMapping("/login")
+	public String login(@RequestParam("email-phone") String emph, @RequestParam String password, ModelMap map,
+			HttpSession session) {
+		return userService.login(emph, password, map, session);
 	}
 
 }
