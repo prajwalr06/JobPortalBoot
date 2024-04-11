@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Email;
@@ -41,5 +42,11 @@ public class PortalUser {
 	private String role;
 	private int otp;
 	private boolean verified;
+	private boolean profileComplete;
 
+	@OneToOne
+	private RecruiterDetails recruiterDetails;
+
+	@OneToOne
+	private ApplicantDetails applicantDetails;
 }

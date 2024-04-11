@@ -66,4 +66,10 @@ public class GeneralController {
 		return userService.login(emph, password, map, session);
 	}
 
+	@GetMapping("/logout")
+	public String logout(HttpSession session, ModelMap map) {
+		session.removeAttribute("portalUser");
+		map.put("msg", "Logout Success");
+		return "home.html";
+	}
 }
