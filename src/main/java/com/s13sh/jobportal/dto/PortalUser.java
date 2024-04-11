@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import org.springframework.stereotype.Component;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -44,9 +45,9 @@ public class PortalUser {
 	private boolean verified;
 	private boolean profileComplete;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private RecruiterDetails recruiterDetails;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private ApplicantDetails applicantDetails;
 }

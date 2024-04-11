@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applicant Profile</title>
+</head>
+<body>
+    <form action="/applicant/complete-profile" method="post">
+        Highest Education: <input type="text" name="highestEducation"><br>
+        Skills: <input type="checkbox" name="skills" value="Java">Java
+        <input type="checkbox" name="skills" value="JDBC">JDBC
+        <input type="checkbox" name="skills" value="HTML">HTML
+        <input type="checkbox" name="skills" value="CSS">CSS
+        <input type="checkbox" name="skills" value="CPP">CPP
+        <br>
+        Percentage:<br>
+        10: <input type="text" name="percentage10"><br>
+        12: <input type="text" name="percentage12"><br>
+        Degree: <input type="text" name="percentageDegree"><br>
+        Masters: <input type="text" name="percentageMasters"><br>
+        Resume: <input type="file" name="resume" accept=".pdf"><br>
+        <button>Add</button>
+    </form>
+</body>
+</html>
