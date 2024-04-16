@@ -3,7 +3,6 @@ package com.s13sh.jobportal;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-//Run This Class
 @SpringBootApplication
 public class JobPortalApplication {
 

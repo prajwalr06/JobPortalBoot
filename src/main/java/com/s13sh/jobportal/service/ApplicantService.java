@@ -2,6 +2,7 @@ package com.s13sh.jobportal.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class ApplicantService {
 			map.put("msg", "Invalid Session");
 			return "home.html";
 		} else {
-			String resumePath = uploadToClodinary(resume);
+			String resumePath = uploadToCloudinary(resume);
 			details.setResumePath(resumePath);
 			portalUser.setApplicantDetails(details);
 			portalUser.setProfileComplete(true);
@@ -39,7 +40,7 @@ public class ApplicantService {
 		}
 	}
 	
-	public String uploadToClodinary(MultipartFile file) {
+	public String uploadToCloudinary(MultipartFile file) {
 		Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
 				  "cloud_name", "djkyoabl5",
 				  "api_key", "297695696273364",
@@ -47,7 +48,9 @@ public class ApplicantService {
 		
 		Map resume=null;
 		try {
-			resume = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+			Map<String, Object> uploadOptions=new HashMap<String, Object>();
+			uploadOptions.put("folder", "Resumes");
+			resume = cloudinary.uploader().upload(file.getBytes(), uploadOptions);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

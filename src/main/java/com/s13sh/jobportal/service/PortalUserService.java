@@ -24,74 +24,46 @@ public class PortalUserService {
 	@Autowired
 	EmailSendingHelper emailHelper;
 
-	public String signup(PortalUser portalUser, BindingResult result, ModelMap map) {
-		if (portalUser.getDob() == null) {
-			result.rejectValue("dob", "error.dob", "* Select a Date");
-			System.out.println("Error - Age is Not Selected");
-		} else if (LocalDate.now().getYear() - portalUser.getDob().getYear() < 18) {
-			result.rejectValue("dob", "error.dob", "* Age should be Greater Than 18");
-			System.out.println("Error - Age is Not Greater Than 18");
-		}
-		if (!portalUser.getPassword().equals(portalUser.getConfirm_password())) {
-			result.rejectValue("confirm_password", "error.confirm_password",
-					"* Password and Confirm Password Should be Matching");
-			System.out.println("Error - Password is Not Matching");
-		}
-		if (userDao.existsByEmail(portalUser.getEmail())) {
-			result.rejectValue("email", "error.email", "* Account Already Exists");
-			System.out.println("Error - Email is Repeated");
-		}
+	public String signup(PortalUser portalUser, BindingResult result, HttpSession session) {
+		extraValidation(portalUser, result);
 		if (result.hasErrors()) {
-			System.out.println("Error - There is Some Error");
 			return "signup.html";
 		} else {
-			System.out.println("No Errors");
-			int otp = new Random().nextInt(100000, 999999);
-			System.out.println("Otp Generated - " + otp);
-			portalUser.setOtp(otp);
-			portalUser.setPassword(AES.encrypt(portalUser.getPassword(), "123"));
-			portalUser.setConfirm_password(AES.encrypt(portalUser.getConfirm_password(), "123"));
-			System.out.println("Encrypted Password - " + portalUser.getPassword());
+			portalUser.setOtp(generateOtp());
+			portalUser.setPassword(encrypt(portalUser.getPassword()));
+			portalUser.setConfirm_password(encrypt(portalUser.getConfirm_password()));
 			userDao.saveUser(portalUser);
-			System.out.println("Data is Saved in db");
+			System.out.println("Data is Saved in Database");
 			emailHelper.sendOtp(portalUser);
-			System.out.println("Otp is Sent to Email " + portalUser.getEmail());
-			map.put("msg", "Otp Sent Success");
-			map.put("id", portalUser.getId());
-			System.out.println("Control- enter-otp.html");
-			return "enter-otp.html";
+			session.setAttribute("success", "Otp Sent Success");
+			session.setAttribute("id", portalUser.getId());
+			return "redirect:/enter-otp";
 		}
 	}
 
-	public String submitOtp(int otp, int id, ModelMap map) {
+	public String submitOtp(int otp, int id, HttpSession session) {
 		PortalUser portalUser = userDao.findUserById(id);
 		if (otp == portalUser.getOtp()) {
-			System.out.println("Success- OTP Matched");
 			portalUser.setVerified(true);
 			userDao.saveUser(portalUser);
-			map.put("msg", "Account Created Success");
-			return "login.html";
+			session.setAttribute("success", "Account Created Success");
+			session.removeAttribute("failure");
+			return "redirect:/login";
 		} else {
-			System.out.println("Failure- OTP MissMatch");
-			map.put("msg", "Incorrect Otp! Try Again");
-			map.put("id", portalUser.getId());
-			return "enter-otp.html";
+			session.removeAttribute("success");
+			session.setAttribute("failure", "Invalid OTP");
+			return "redirect:/enter-otp";
 		}
 	}
 
-	public String resendOtp(int id, ModelMap map) {
+	public String resendOtp(int id, HttpSession session) {
 		PortalUser portalUser = userDao.findUserById(id);
-		int otp = new Random().nextInt(100000, 999999);
-		System.out.println("Otp ReGenerated - " + otp);
-		portalUser.setOtp(otp);
+		portalUser.setOtp(generateOtp());
 		userDao.saveUser(portalUser);
-		System.out.println("Data is Updated in db");
+		System.out.println("Data is Updated in database");
 		emailHelper.sendOtp(portalUser);
-		System.out.println("Otp is Sent to Email " + portalUser.getEmail());
-		map.put("msg", "Otp Sent Again, Check");
-		map.put("id", portalUser.getId());
-		System.out.println("Control- enter-otp.html");
-		return "enter-otp.html";
+		session.setAttribute("success", "Otp Sent Again, Check");
+		return "redirect:/enter-otp";
 	}
 
 	public String login(String emph, String password, ModelMap map, HttpSession session) {
@@ -126,6 +98,38 @@ public class PortalUserService {
 			}
 		}
 
+	}
+
+	public String encrypt(String password) {
+		return AES.encrypt(password, "123");
+	}
+
+	public String decrypt(String password) {
+		return AES.decrypt(password, "123");
+	}
+
+	public int generateOtp() {
+		int otp = new Random().nextInt(100000, 999999);
+		System.out.println("Otp Generated - " + otp);
+		return otp;
+	}
+
+	public void extraValidation(PortalUser portalUser, BindingResult result) {
+		if (portalUser.getDob() == null) {
+			result.rejectValue("dob", "error.dob", "* Select a Date");
+		} else if (LocalDate.now().getYear() - portalUser.getDob().getYear() < 18) {
+			result.rejectValue("dob", "error.dob", "* Age should be Greater Than 18");
+		}
+		if (!portalUser.getPassword().equals(portalUser.getConfirm_password())) {
+			result.rejectValue("confirm_password", "error.confirm_password",
+					"* Password and Confirm Password Should be Matching");
+		}
+		if (userDao.existsByEmail(portalUser.getEmail())) {
+			result.rejectValue("email", "error.email", "* Account Already Exists");
+		}
+		if (userDao.existsByMobile(portalUser.getMobile())) {
+			result.rejectValue("mobile", "error.mobile", "* Account Already Exists");
+		}
 	}
 
 }

@@ -37,6 +37,7 @@ public class EmailSendingHelper {
 		helper.setText(text,true);
 		
 		mailSender.send(message);
+		System.out.println("Otp is Sent to Email " + portalUser.getEmail());
 		}
 		catch (Exception e) {
 			System.out.println("Error - Not Able to Send Email");

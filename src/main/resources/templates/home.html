@@ -5,7 +5,10 @@
 </head>
 <body>
 	<h1>Home</h1>
-	<h2 style="color: red" th:text="${msg}"></h2>
+	<div class="message">
+<h2 style="color:green" th:text="${success}"></h2>
+<h2 style="color:red" th:text="${failure}"></h2>
+</div>
 	<a href="/login">Login</a>
 	<a href="/signup">Signup</a>
 </body>

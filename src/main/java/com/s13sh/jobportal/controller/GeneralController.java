@@ -26,38 +26,38 @@ public class GeneralController {
 
 	@GetMapping("/")
 	public String loadHome() {
-		System.out.println("Control- / , Homepage is displayer");
 		return "home.html";
 	}
 
 	@GetMapping("/login")
 	public String loadLogin() {
-		System.out.println("Control- /login , Login Page is displayer");
 		return "login.html";
 	}
 
 	@GetMapping("/signup")
 	public String loadSignup(ModelMap map) {
-		System.out.println("Control- /signup - Get , Empty Object is Sent to Signup Page");
 		map.put("portalUser", portalUser);
 		return "signup.html";
 	}
 
 	@PostMapping("/signup")
-	public String signup(@Valid PortalUser portalUser, BindingResult result, ModelMap map) {
-		System.out.println("Control- /signup - Post , Recieved Post Request");
-		return userService.signup(portalUser, result, map);
+	public String signup(@Valid PortalUser portalUser, BindingResult result,HttpSession session) {
+		return userService.signup(portalUser, result,session);
+	}
+	
+	@GetMapping("/enter-otp")
+	public String loadEnterOtp() {
+		return "enter-otp.html";
 	}
 
 	@PostMapping("/submit-otp")
-	public String submitOtp(@RequestParam int otp, @RequestParam int id, ModelMap map) {
-		System.out.println("Control - /submit-otp Get , Recieved otp");
-		return userService.submitOtp(otp, id, map);
+	public String submitOtp(@RequestParam int otp, @RequestParam int id,HttpSession session) {
+		return userService.submitOtp(otp, id, session);
 	}
 
 	@GetMapping("/resend-otp/{id}")
-	public String resendOtp(@PathVariable int id, ModelMap map) {
-		return userService.resendOtp(id, map);
+	public String resendOtp(@PathVariable int id,HttpSession session) {
+		return userService.resendOtp(id, session);
 	}
 
 	@PostMapping("/login")
@@ -69,7 +69,7 @@ public class GeneralController {
 	@GetMapping("/logout")
 	public String logout(HttpSession session, ModelMap map) {
 		session.removeAttribute("portalUser");
-		map.put("msg", "Logout Success");
+		map.put("success", "Logout Success");
 		return "home.html";
 	}
 }

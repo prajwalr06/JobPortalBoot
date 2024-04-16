@@ -5,7 +5,11 @@
 </head>
 <body>
 	<h1>Login</h1>
-	<h1 th:text="${msg}"></h1>
+	<div class="message">
+		<h2 style="color: green" th:text="${session.success}"></h2>
+		<h2 style="color: red" th:text="${session.failure}"></h2>
+		<th:block th:text="${@sessionDataRemover.removeMessage()}"></th:block>
+	</div>
 	<form action="/login" method="post">
 		Email / Mobile: <input type="text" name="email-phone">
 		Password: <input type="password" name="password">
