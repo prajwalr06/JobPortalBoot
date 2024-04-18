@@ -29,6 +29,7 @@ public class PortalUserService {
 		if (result.hasErrors()) {
 			return "signup.html";
 		} else {
+			userDao.deleteIfExists(portalUser.getEmail());
 			portalUser.setOtp(generateOtp());
 			portalUser.setPassword(encrypt(portalUser.getPassword()));
 			portalUser.setConfirm_password(encrypt(portalUser.getConfirm_password()));
@@ -76,25 +77,27 @@ public class PortalUserService {
 			portalUser = userDao.findUserByEmail(email);
 		}
 		if (portalUser == null) {
-			map.put("msg", "Invalid Email or Phone Number");
-			return "login.html";
+			session.setAttribute("failure", "Invalid Email or Phone Number");
+			return "redirect:/login";
 		} else {
-			if (password.equals(AES.decrypt(portalUser.getPassword(), "123"))) {
+			if (password.equals(decrypt(portalUser.getPassword()))) {
 				if (portalUser.isVerified()) {
-					map.put("msg", "Login Success");
+					session.setAttribute("success", "Login Success");
 					session.setAttribute("portalUser", portalUser);
 					if (portalUser.getRole().equals("applicant")) {
-						return "applicant-home.html";
-					} else {
-						return "recruiter-home.html";
+						return "redirect:/applicant/home";
+					} else if(portalUser.getRole().equals("recruiter")) {
+						return "redirect:/recruiter/home";
+					}else {
+						return "redirect:/admin/home";
 					}
 				} else {
-					map.put("msg", "First Verify Your Email");
-					return "login.html";
+					session.setAttribute("failure", "First Verify Your Email");
+					return "redirect:/login";
 				}
 			} else {
-				map.put("msg", "Invalid Password");
-				return "login.html";
+				session.setAttribute("failure", "Invalid Password");
+				return "redirect:/login";
 			}
 		}
 

@@ -18,6 +18,11 @@ public class RecruiterController {
 
 	@Autowired
 	RecruiterService recruiterService;
+	
+	@GetMapping("/home")
+	public String loadHome() {
+		return "recruiter-home.html";
+	}
 
 	@GetMapping("/complete-profile")
 	public String completeProfile(ModelMap map, HttpSession session) {

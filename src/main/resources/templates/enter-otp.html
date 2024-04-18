@@ -8,6 +8,7 @@
 	<div class="message">
 		<h2 style="color: green" th:text="${session.success}"></h2>
 		<h2 style="color: red" th:text="${session.failure}"></h2>
+		<th:block th:text="${@sessionDataRemover.removeMessage()}"></th:block>
 	</div>
 	<form action="/submit-otp" method="post">
 		Enter Otp:<input type="number" name="otp"> <input

@@ -67,9 +67,9 @@ public class GeneralController {
 	}
 
 	@GetMapping("/logout")
-	public String logout(HttpSession session, ModelMap map) {
+	public String logout(HttpSession session) {
 		session.removeAttribute("portalUser");
-		map.put("success", "Logout Success");
-		return "home.html";
+		session.setAttribute("success", "Logout Success");
+		return "redirect:/";
 	}
 }

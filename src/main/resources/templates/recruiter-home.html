@@ -5,7 +5,11 @@
 <title>Home-Recruiter</title>
 </head>
 <body>
-	<h1 th:text="${msg}"></h1>
+	<div class="message">
+		<h2 style="color: green" th:text="${session.success}"></h2>
+		<h2 style="color: red" th:text="${session.failure}"></h2>
+		<th:block th:text="${@sessionDataRemover.removeMessage()}"></th:block>
+	</div>
 	<h1>Recruiter Home</h1>
 	<br>
 	<th:block th:if="${!session.portalUser.profileComplete}">

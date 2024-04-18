@@ -22,7 +22,12 @@ public class ApplicantController {
 
 	@Autowired
 	ApplicantService applicantService;
-
+	
+	@GetMapping("/home")
+	public String loadHome() {
+		return "applicant-home.html";
+	}
+	
 	@GetMapping("/complete-profile")
 	public String completeProfile() {
 		return "applicant-profile.html";

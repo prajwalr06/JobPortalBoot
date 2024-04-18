@@ -19,27 +19,27 @@ public class RecruiterService {
 	public String saveRecruiterDetails(RecruiterDetails details, HttpSession session, ModelMap map) {
 		PortalUser portalUser = (PortalUser) session.getAttribute("portalUser");
 		if (portalUser == null) {
-			map.put("msg", "Invalid Session");
-			return "home.html";
+			session.setAttribute("failure", "Invalid Session");
+			return "redirect:/";
 		} else {
 			portalUser.setRecruiterDetails(details);
 			userDao.saveUser(portalUser);
-			map.put("msg", "Profile Updated Success");
-			return "recruiter-home.html";
+			session.setAttribute("success", "Profile Updated Success");
+			return "redirect:/recruiter/home";
 		}
 	}
 
 	public String checkProfile(ModelMap map, HttpSession session) {
 		PortalUser portalUser = (PortalUser) session.getAttribute("portalUser");
 		if (portalUser == null) {
-			map.put("msg", "Invalid Session");
-			return "home.html";
+			session.setAttribute("failure", "Invalid Session");
+			return "redirect:/";
 		} else {
 			if (portalUser.getRecruiterDetails() == null) {
 				return "recruiter-profile.html";
 			} else {
-				map.put("msg", "Wait for Admins Approval");
-				return "recruiter-home.html";
+				session.setAttribute("failure", "Wait for Admins Approval");
+				return "redirect:/recruiter/home";
 			}
 		}
 	}
