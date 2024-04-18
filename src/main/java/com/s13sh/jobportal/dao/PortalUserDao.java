@@ -1,5 +1,7 @@
 package com.s13sh.jobportal.dao;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -40,5 +42,9 @@ public class PortalUserDao {
 
 	public boolean existsByMobile(long mobile) {
 		return userRepository.existsByMobileAndVerifiedTrue(mobile);
+	}
+
+	public List<PortalUser> fetchRecruiters() {
+		return userRepository.findByRecruiterDetailsNotNull();
 	}
 }

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Admin View Recruiter</title>
+</head>
+<body>
+	<div class="message">
+		<h2 style="color: green" th:text="${session.success}"></h2>
+		<h2 style="color: red" th:text="${session.failure}"></h2>
+		<th:block th:text="${@sessionDataRemover.removeMessage()}"></th:block>
+	</div>
+	<h1>Recruiter Details</h1>
+	<div align="center">
+		<table>
+			<tr>
+				<th>Recruiter Name</th>
+				<th>Recruiter Mobile</th>
+				<th>Recruiter Email</th>
+				<th>Company Name</th>
+				<th>About Company</th>
+				<th>Company Mobile</th>
+				<th>License Details</th>
+				<th>Approve</th>
+			</tr>
+			
+			<tr th:each="user:${list}">
+			<th:block th:if="!user.profileCompleted">
+				<th th:text="${user.name}"></th>
+				<th th:text="${user.mobile}"></th>
+				<th th:text="${user.email}"></th>
+				<th th:text="${user.recruiterDetails.companyName}"></th>
+				<th th:text="${user.recruiterDetails.aboutUs}">About Company</th>
+				<th th:text="${user.recruiterDetails.companyMobileNumber}">Company Mobile</th>
+				<th th:text="${user.recruiterDetails.licenceNumber}">License Details</th>
+				<th><a th:href="'/admin/complete-profile/'+${user.id}"><button>Approve</button></a></th>
+			</th:block>
+			</tr>
+		</table>
+		<a href="/admin/home"><button>Back</button></a>
+	</div>
+</body>
+</html>
