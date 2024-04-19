@@ -85,11 +85,11 @@ public class PortalUserService {
 					session.setAttribute("success", "Login Success");
 					session.setAttribute("portalUser", portalUser);
 					if (portalUser.getRole().equals("applicant")) {
-						return "redirect:/applicant/home";
+						return "redirect:/";
 					} else if(portalUser.getRole().equals("recruiter")) {
-						return "redirect:/recruiter/home";
+						return "redirect:/";
 					}else {
-						return "redirect:/admin/home";
+						return "redirect:/";
 					}
 				} else {
 					session.setAttribute("failure", "First Verify Your Email");
