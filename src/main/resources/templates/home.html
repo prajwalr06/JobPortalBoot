@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<title>Document</title>
+	<title>Job Portal - Home</title>
+	<th:block th:insert="~{fragments/header.html}"></th:block>
+	<link rel="stylesheet" href="/css/home.css">
 </head>
+
 <body>
-	<h1>Home</h1>
-<div class="message">
-		<h2 style="color: green" th:text="${session.success}"></h2>
-		<h2 style="color: red" th:text="${session.failure}"></h2>
-		<th:block th:text="${@sessionDataRemover.removeMessage()}"></th:block>
+	<th:block th:insert="~{fragments/navbar.html}"></th:block>
+	<div class="container mt-5 custom-background full-height">
+		<th:block th:insert="~{fragments/message.html}"></th:block>
 	</div>
-	<a href="/login">Login</a>
-	<a href="/signup">Signup</a>
+	<th:block th:insert="~{fragments/footer.html}"></th:block>
 </body>
+
 </html>
