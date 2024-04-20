@@ -14,29 +14,28 @@ import jakarta.servlet.http.HttpSession;
 
 @Service
 public class AdminService {
-	
+
 	@Autowired
 	PortalUser portalUser;
 
 	@Autowired
 	PortalUserDao userDao;
-	
+
 	public String createAdmin(String email, String password, HttpSession session) {
 		if (userDao.existsByEmail(email)) {
-			session.setAttribute("failure","Account Already Exists");
+			session.setAttribute("failure", "Account Already Exists");
+			return "redirect:/";
+		} else {
+			portalUser.setEmail(email);
+			portalUser.setPassword(encrypt(password));
+			portalUser.setRole("admin");
+			portalUser.setVerified(true);
+			userDao.saveUser(portalUser);
+			session.setAttribute("success", "Admin Account Created Success");
 			return "redirect:/";
 		}
-		else {
-		portalUser.setEmail(email);
-		portalUser.setPassword(encrypt(password));
-		portalUser.setRole("admin");
-		portalUser.setVerified(true);
-		userDao.saveUser(portalUser);
-		session.setAttribute("success", "Admin Account Created Success");
-		return "redirect:/";
-		}
 	}
-	
+
 	public String encrypt(String password) {
 		return AES.encrypt(password, "123");
 	}
@@ -47,11 +46,11 @@ public class AdminService {
 			session.setAttribute("failure", "Invalid Session");
 			return "redirect:/";
 		} else {
-			List<PortalUser> list=userDao.fetchRecruiters();
-			if(list.isEmpty()) {
+			List<PortalUser> list = userDao.fetchRecruiters();
+			if (list.isEmpty()) {
 				session.setAttribute("failure", "No Recruiter Accounts Crearted Yet");
-				return "redirect:/admin/home";
-			}else {
+				return "redirect:/";
+			} else {
 				map.put("list", list);
 				return "admin-view-recruiter.html";
 			}
@@ -64,11 +63,11 @@ public class AdminService {
 			session.setAttribute("failure", "Invalid Session");
 			return "redirect:/";
 		} else {
-			PortalUser user=userDao.findUserById(id);
+			PortalUser user = userDao.findUserById(id);
 			user.setProfileComplete(true);
 			userDao.saveUser(portalUser);
 			session.setAttribute("success", "Profile Activated");
-			return "redirect:/admin/home";
+			return "redirect:/";
 		}
 	}
 

@@ -25,7 +25,7 @@ public class RecruiterService {
 			portalUser.setRecruiterDetails(details);
 			userDao.saveUser(portalUser);
 			session.setAttribute("success", "Profile Updated Success");
-			return "redirect:/recruiter/home";
+			return "redirect:/";
 		}
 	}
 
@@ -39,7 +39,7 @@ public class RecruiterService {
 				return "recruiter-profile.html";
 			} else {
 				session.setAttribute("failure", "Wait for Admins Approval");
-				return "redirect:/recruiter/home";
+				return "redirect:/";
 			}
 		}
 	}

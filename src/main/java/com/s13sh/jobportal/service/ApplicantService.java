@@ -35,7 +35,7 @@ public class ApplicantService {
 			portalUser.setProfileComplete(true);
 			userDao.saveUser(portalUser);
 			session.setAttribute("success", "Account Verified Success");
-			return "redirect:/applicant/home";
+			return "redirect:/";
 		}
 	}
 
