@@ -44,4 +44,19 @@ public class RecruiterService {
 		}
 	}
 
+	public String postJob(HttpSession session) {
+		PortalUser portalUser = (PortalUser) session.getAttribute("portalUser");
+		if (portalUser == null) {
+			session.setAttribute("failure", "Invalid Session");
+			return "redirect:/";
+		} else {
+			if (!portalUser.isProfileComplete()) {
+				session.setAttribute("failure", "First Complete Your Profile");
+				return "redirect:/";
+			} else {
+				return "post-job.html";
+			}
+		}
+	}
+
 }

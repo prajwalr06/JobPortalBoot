@@ -33,4 +33,11 @@ public class RecruiterController {
 	public String completeProfile(RecruiterDetails details, HttpSession session, ModelMap map) {
 		return recruiterService.saveRecruiterDetails(details, session, map);
 	}
+	
+	@GetMapping("/post-job")
+	public String loadPostJob(HttpSession session) {
+		return recruiterService.postJob(session);
+	}
+	
+	
 }

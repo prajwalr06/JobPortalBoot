@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
 <title>Admin View Recruiter</title>
@@ -25,7 +25,7 @@
 			</tr>
 			
 			<tr th:each="user:${list}">
-			<th:block th:if="!user.profileCompleted">
+				<th:block th:if="${!user.profileComplete}">
 				<th th:text="${user.name}"></th>
 				<th th:text="${user.mobile}"></th>
 				<th th:text="${user.email}"></th>
@@ -34,10 +34,10 @@
 				<th th:text="${user.recruiterDetails.companyMobileNumber}">Company Mobile</th>
 				<th th:text="${user.recruiterDetails.licenceNumber}">License Details</th>
 				<th><a th:href="'/admin/complete-profile/'+${user.id}"><button>Approve</button></a></th>
-			</th:block>
+				</th:block>
 			</tr>
 		</table>
-		<a href="/admin/home"><button>Back</button></a>
+		<a href="/"><button>Back</button></a>
 	</div>
 </body>
 </html>
