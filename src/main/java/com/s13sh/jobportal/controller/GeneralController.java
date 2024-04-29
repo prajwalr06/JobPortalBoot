@@ -7,7 +7,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.s13sh.jobportal.dto.PortalUser;
@@ -42,22 +41,22 @@ public class GeneralController {
 	}
 
 	@PostMapping("/signup")
-	public String signup(@Valid PortalUser portalUser, BindingResult result,HttpSession session) {
-		return userService.signup(portalUser, result,session);
+	public String signup(@Valid PortalUser portalUser, BindingResult result, HttpSession session) {
+		return userService.signup(portalUser, result, session);
 	}
-	
+
 	@GetMapping("/enter-otp")
 	public String loadEnterOtp() {
 		return "enter-otp.html";
 	}
 
 	@PostMapping("/submit-otp")
-	public String submitOtp(@RequestParam int otp, @RequestParam int id,HttpSession session) {
+	public String submitOtp(@RequestParam int otp, @RequestParam int id, HttpSession session) {
 		return userService.submitOtp(otp, id, session);
 	}
 
 	@GetMapping("/resend-otp/{id}")
-	public String resendOtp(@PathVariable int id,HttpSession session) {
+	public String resendOtp(@PathVariable int id, HttpSession session) {
 		return userService.resendOtp(id, session);
 	}
 
@@ -73,5 +72,5 @@ public class GeneralController {
 		session.setAttribute("success", "Logout Success");
 		return "redirect:/";
 	}
-	
+
 }
