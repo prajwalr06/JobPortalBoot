@@ -2,6 +2,7 @@ package com.s13sh.jobportal.service;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.s13sh.jobportal.dao.JobDao;
 import com.s13sh.jobportal.dao.PortalUserDao;
 import com.s13sh.jobportal.dto.ApplicantDetails;
+import com.s13sh.jobportal.dto.Job;
 import com.s13sh.jobportal.dto.PortalUser;
 
 import jakarta.servlet.http.HttpSession;
@@ -22,6 +25,9 @@ public class ApplicantService {
 
 	@Autowired
 	PortalUserDao userDao;
+
+	@Autowired
+	JobDao jobDao;
 
 	public String completeProfile(ApplicantDetails details, MultipartFile resume, HttpSession session, ModelMap map) {
 		PortalUser portalUser = (PortalUser) session.getAttribute("portalUser");
@@ -52,6 +58,58 @@ public class ApplicantService {
 			e.printStackTrace();
 		}
 		return (String) resume.get("url");
+	}
+
+	public String viewJobs(HttpSession session, ModelMap map) {
+		PortalUser portalUser = (PortalUser) session.getAttribute("portalUser");
+		if (portalUser == null) {
+			session.setAttribute("failure", "Invalid Session");
+			return "home.html";
+		} else {
+			List<Job> jobs = jobDao.viewAllJobs();
+			if (jobs.isEmpty()) {
+				session.setAttribute("failure", "No Jobs Posted Yet");
+				return "redirect:/";
+			} else {
+				map.put("jobs", jobs);
+				return "applicant-view-jobs.html";
+			}
+		}
+	}
+
+	public String applyJob(int id, HttpSession session) {
+		PortalUser portalUser = (PortalUser) session.getAttribute("portalUser");
+		if (portalUser == null) {
+			session.setAttribute("failure", "Invalid Session");
+			return "home.html";
+		} else {
+			if (!portalUser.isProfileComplete()) {
+				session.setAttribute("failure", "First Complete Your Profile");
+				return "redirect:/";
+			} else {
+				Job job = jobDao.findById(id);
+				ApplicantDetails applicantDetails = portalUser.getApplicantDetails();
+				List<Job> appliedJobs = applicantDetails.getJobs();
+				boolean applied = false;
+				for (Job appliedJob : appliedJobs) {
+					if (job.getId() == appliedJob.getId()) {
+						applied = true;
+						break;
+					}
+				}
+
+				if (applied) {
+					session.setAttribute("failure", "Already Applied Wait for Response or Contact - "
+							+ job.getRecruiterDetails().getCompanyMobileNumber());
+					return "redirect:/";
+				} else {
+					appliedJobs.add(job);
+					userDao.saveUser(portalUser);
+					session.setAttribute("success", "Applied for Job Success Wait for Response");
+					return "redirect:/";
+				}
+			}
+		}
 	}
 
 }

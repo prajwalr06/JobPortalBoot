@@ -1,10 +1,13 @@
 package com.s13sh.jobportal.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 
 import com.s13sh.jobportal.dao.PortalUserDao;
+import com.s13sh.jobportal.dto.Job;
 import com.s13sh.jobportal.dto.PortalUser;
 import com.s13sh.jobportal.dto.RecruiterDetails;
 
@@ -55,6 +58,43 @@ public class RecruiterService {
 				return "redirect:/";
 			} else {
 				return "post-job.html";
+			}
+		}
+	}
+
+	public String postJob(Job job, HttpSession session) {
+		PortalUser portalUser = (PortalUser) session.getAttribute("portalUser");
+		if (portalUser == null) {
+			session.setAttribute("failure", "Invalid Session");
+			return "redirect:/";
+		} else {
+			job.setRecruiterDetails(portalUser.getRecruiterDetails());
+			List<Job> jobs = portalUser.getRecruiterDetails().getJobs();
+			jobs.add(job);
+			userDao.saveUser(portalUser);
+			session.setAttribute("success", "Job Posted Success");
+			return "redirect:/";
+		}
+	}
+
+	public String viewJobs(HttpSession session, ModelMap map) {
+		PortalUser portalUser = (PortalUser) session.getAttribute("portalUser");
+		if (portalUser == null) {
+			session.setAttribute("failure", "Invalid Session");
+			return "redirect:/";
+		} else {
+			if (!portalUser.isProfileComplete()) {
+				session.setAttribute("failure", "First Complete Your Profile");
+				return "redirect:/";
+			} else {
+			List<Job> jobs = portalUser.getRecruiterDetails().getJobs();
+			if (jobs.isEmpty()) {
+				session.setAttribute("failure", "No Jobs Posted Yet");
+				return "redirect:/";
+			} else {
+				map.put("jobs", jobs);
+				return "recruiter-view-jobs.html";
+			}
 			}
 		}
 	}

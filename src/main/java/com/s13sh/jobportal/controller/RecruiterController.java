@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.s13sh.jobportal.dto.Job;
 import com.s13sh.jobportal.dto.RecruiterDetails;
 import com.s13sh.jobportal.service.RecruiterService;
 
@@ -18,7 +19,7 @@ public class RecruiterController {
 
 	@Autowired
 	RecruiterService recruiterService;
-	
+
 	@GetMapping("/home")
 	public String loadHome() {
 		return "recruiter-home.html";
@@ -33,11 +34,20 @@ public class RecruiterController {
 	public String completeProfile(RecruiterDetails details, HttpSession session, ModelMap map) {
 		return recruiterService.saveRecruiterDetails(details, session, map);
 	}
-	
+
 	@GetMapping("/post-job")
 	public String loadPostJob(HttpSession session) {
 		return recruiterService.postJob(session);
 	}
-	
-	
+
+	@PostMapping("/post-job")
+	public String postJob(Job job, HttpSession session) {
+		return recruiterService.postJob(job, session);
+	}
+
+	@GetMapping("/view-jobs")
+	public String viewJobs(HttpSession session, ModelMap map) {
+		return recruiterService.viewJobs(session, map);
+	}
+
 }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,6 +38,16 @@ public class ApplicantController {
 	public String completeProfile(ApplicantDetails details, @RequestParam MultipartFile resume, HttpSession session,
 			ModelMap map) {
 		return applicantService.completeProfile(details, resume, session, map);
+	}
+	
+	@GetMapping("/view-jobs")
+	public String viewJobs(HttpSession session,ModelMap map) {
+		return applicantService.viewJobs(session,map);
+	}
+	
+	@GetMapping("/apply-job/{id}")
+	public String applyJob(HttpSession session,@PathVariable int id) {
+		return applicantService.applyJob(id,session);
 	}
 
 }
