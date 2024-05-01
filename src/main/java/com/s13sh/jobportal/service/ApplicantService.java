@@ -103,6 +103,8 @@ public class ApplicantService {
 							+ job.getRecruiterDetails().getCompanyMobileNumber());
 					return "redirect:/";
 				} else {
+					job.getApplicantDetails().add(applicantDetails);
+					jobDao.saveJob(job);
 					appliedJobs.add(job);
 					userDao.saveUser(portalUser);
 					session.setAttribute("success", "Applied for Job Success Wait for Response");

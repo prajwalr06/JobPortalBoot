@@ -14,12 +14,16 @@ public class JobDao {
 
 	@Autowired
 	JobRepository jobRepository;
-	
-	public List<Job> viewAllJobs(){
+
+	public List<Job> viewAllJobs() {
 		return jobRepository.findByLastDateAfter(LocalDate.now());
 	}
-	
+
 	public Job findById(int id) {
 		return jobRepository.findById(id).orElse(null);
+	}
+
+	public void saveJob(Job job) {
+		jobRepository.save(job);
 	}
 }
