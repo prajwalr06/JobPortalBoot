@@ -36,6 +36,7 @@ public class ApplicantService {
 			return "home.html";
 		} else {
 			String resumePath = uploadToCloudinary(resume);
+			details.setUser(portalUser);
 			details.setResumePath(resumePath);
 			portalUser.setApplicantDetails(details);
 			portalUser.setProfileComplete(true);
@@ -104,9 +105,9 @@ public class ApplicantService {
 					return "redirect:/";
 				} else {
 					job.getApplicantDetails().add(applicantDetails);
-					jobDao.saveJob(job);
 					appliedJobs.add(job);
 					userDao.saveUser(portalUser);
+					jobDao.saveJob(job);	
 					session.setAttribute("success", "Applied for Job Success Wait for Response");
 					return "redirect:/";
 				}

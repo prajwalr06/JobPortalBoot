@@ -1,6 +1,7 @@
 package com.s13sh.jobportal.dto;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -11,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.Data;
 
 @Component
@@ -27,8 +29,15 @@ public class ApplicantDetails {
 	private double percentageDegree;
 	private double percentageMasters;
 	private String resumePath;
+	
+	public String skillsString() {
+		return Arrays.toString(skills);
+	}
 
 	@OneToMany(fetch = FetchType.EAGER)
 	List<Job> jobs = new ArrayList<Job>();
+	
+	@OneToOne
+	PortalUser user;
 
 }

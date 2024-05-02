@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Applicant Details</title>
+	<th:block th:insert="~{fragments/header.html}"></th:block>
+	<link rel="stylesheet" type="text/css" href="/css/table.css">
+</head>
+
+<body>
+	<th:block th:insert="~{fragments/navbar.html}"></th:block>
+	<div class="container mt-5">
+		<th:block th:insert="~{fragments/message.html}"></th:block>
+		<div class="row justify-content-center mt-5">
+			<table>
+				<tr>
+					<th>Applicant Name</th>
+					<th>Mobile Number</th>
+					<th>Skills</th>
+					<th>Highest Qualification</th>
+					<th>Resume</th>
+				</tr>
+
+				<tr th:each="detail:${applicantDetails}">
+					<td th:text="${detail.user.name}"></td>
+					<td th:text="${detail.user.mobile}"></td>
+					<td th:text="${detail.skillsString}"></td>
+					<td th:text="${detail.highestEducation}"></td>
+					<td><a th:href="${detail.resumePath}"><button>View</button></a></td>
+				</tr>
+			</table>
+		</div>
+		<div class="row justify-content-center mt-5">
+			<a href="/" class="center">
+				<button class="back-button">Back</button>
+			</a>
+		</div>
+	</div>
+</body>
+
+</html>

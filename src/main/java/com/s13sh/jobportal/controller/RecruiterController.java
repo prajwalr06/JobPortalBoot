@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -48,6 +49,11 @@ public class RecruiterController {
 	@GetMapping("/view-jobs")
 	public String viewJobs(HttpSession session, ModelMap map) {
 		return recruiterService.viewJobs(session, map);
+	}
+	
+	@GetMapping("/view-applicants/{id}")
+	public String viewApplicants(@PathVariable int id,HttpSession session,ModelMap map) {
+		return recruiterService.viewApplicants(id,session,map);
 	}
 
 }

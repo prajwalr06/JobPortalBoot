@@ -37,8 +37,7 @@
 					<td th:text="${job.skillsRequired}"></td>
 					<td th:text="${job.experienceRequired}"></td>
 					<td th:text="${job.lastDate}"></td>
-					<td><a><button class="approve-button">View</button></a></td>
-					</th:block>
+					<td><a th:href="'/recruiter/view-applicants/'+${job.id}"><button class="approve-button">View</button></a></td>
 				</tr>
 			</table>
 		</div>
